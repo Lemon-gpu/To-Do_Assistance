@@ -9,13 +9,12 @@ def getScreenShot() -> cv.Mat: #获取屏幕截图
     screen = cv.cvtColor(np.array(screen), cv.COLOR_RGB2BGR)
     return screen
 
-def objectMatch(src: cv.Mat, template: cv.Mat) -> list: #匹配图像
+def objectMatch(src: cv.Mat, template: cv.Mat, threshold: float = 0.99) -> list: #匹配图像
     result: list = []
     src = cv.cvtColor(src, cv.COLOR_BGR2GRAY)
     template = cv.cvtColor(template, cv.COLOR_BGR2GRAY)
     w, h = template.shape[::-1]
     res = cv.matchTemplate(src, template, cv.TM_CCOEFF_NORMED)
-    threshold = 0.99
     loc = np.where( res >= threshold)
     for pt in zip(*loc[::-1]):
         result.append([pt[0] + w / 2, pt[1] + h / 2])
